@@ -1,0 +1,7 @@
+dvc
+sklearn
+pandas
+flask 
+gunicorn
+mlflow
+imblearn  
