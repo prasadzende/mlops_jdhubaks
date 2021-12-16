@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  web:
+    build: .
+    image: jenkins-credit-pipeline:demo
+    container_name: Fraud_detection_demo
+    ports:
+      - "5001:5000"
