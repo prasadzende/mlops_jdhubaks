@@ -1,0 +1,59 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python src/load_data.py --config=params.yaml
+    deps:
+    - path: data_given/creditcard.csv
+      md5: 457cf8df8bc38a5c8a633a61b643d1ee
+      size: 150828752
+    - path: src/get_data.py
+      md5: d04da7161ca4955ac462a8c356338a80
+      size: 656
+    - path: src/load_data.py
+      md5: 342cd0b3700332644d20ea34751198a1
+      size: 686
+    outs:
+    - path: data/raw/creditcard.csv
+      md5: 626afa6d7db5917dde85181ac1547db9
+      size: 150817597
+      isexec: true
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - path: data/raw/creditcard.csv
+      md5: 626afa6d7db5917dde85181ac1547db9
+      size: 150817597
+    - path: src/split_data.py
+      md5: 5614bac02cb743bdf598d610183a8168
+      size: 1471
+    outs:
+    - path: data/processed/test_creditcard.csv
+      md5: 6aa7096c8623828a3cce5d2940f051c8
+      size: 2288375
+      isexec: true
+    - path: data/processed/train_creditcard.csv
+      md5: 1d8985f967d7072ee261e4acb27c067e
+      size: 9153298
+      isexec: true
+  train_and_evaluate:
+    cmd: python src/train_and_evaluate.py --config=params.yaml
+    deps:
+    - path: data/processed/test_creditcard.csv
+      md5: 6aa7096c8623828a3cce5d2940f051c8
+      size: 2288375
+    - path: data/processed/train_creditcard.csv
+      md5: 1d8985f967d7072ee261e4acb27c067e
+      size: 9153298
+    - path: src/train_and_evaluate.py
+      md5: 3924ea5124cd99abe9ecb0d2a0dfa4fd
+      size: 3871
+    params:
+      params.yaml:
+        estimators.SGDClassifier.params.alpha: 0.0005
+        estimators.SGDClassifier.params.l1_ratio: 0.6
+  log_production_model:
+    cmd: python src/log_production_model.py --config=params.yaml
+    deps:
+    - path: src/log_production_model.py
+      md5: 7049d0ca240ae56001903b401193cb9a
+      size: 1852

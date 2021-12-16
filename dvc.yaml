@@ -39,4 +39,3 @@ stages:
     cmd: python src/log_production_model.py --config=params.yaml
     deps:
     - src/log_production_model.py
-    - src/train_and_evaluate.py

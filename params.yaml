@@ -20,10 +20,10 @@ estimators:
     params: 
       # alpha: 0.0001
       # l1_ratio: 0.15
-      alpha: 0.0003
-      l1_ratio: 0.9
-      # alpha: 0.0005
-      # l1_ratio: 0.6
+      # alpha: 0.0003
+      # l1_ratio: 0.9
+      alpha: 0.0005
+      l1_ratio: 0.6
 model_dir: saved_models
 
 # reports:
