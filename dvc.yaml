@@ -1,0 +1,42 @@
+stages:
+  load_data:
+    cmd: python src/load_data.py --config=params.yaml
+    deps:
+    - src/get_data.py
+    - src/load_data.py
+    - data_given/creditcard.csv
+    outs:
+    - data/raw/creditcard.csv
+
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - src/split_data.py
+    - data/raw/creditcard.csv
+    outs:
+    - data/processed/train_creditcard.csv
+    - data/processed/test_creditcard.csv 
+
+  train_and_evaluate:
+    cmd: python src/train_and_evaluate.py --config=params.yaml
+    deps:
+    - data/processed/train_creditcard.csv
+    - data/processed/test_creditcard.csv 
+    - src/train_and_evaluate.py
+    
+    params:
+    - estimators.SGDClassifier.params.alpha
+    - estimators.SGDClassifier.params.l1_ratio
+    # metrics:
+    # - report/scores.json:
+    #     cache: false
+    # - report/params.json:
+    #     cache: false
+    # outs:
+    # - saved_models/models
+
+  log_production_model:
+    cmd: python src/log_production_model.py --config=params.yaml
+    deps:
+    - src/log_production_model.py
+    - src/train_and_evaluate.py

@@ -1,0 +1,40 @@
+base:
+  project: credit_card_classification
+  n_components: 2
+  random_state: 100
+  target_col: Class
+
+data_source:
+  s3_source: data_given/creditcard.csv
+
+load_data:
+  raw_dataset_csv: data/raw/creditcard.csv
+
+split_data:
+  train_path: data/processed/train_creditcard.csv
+  test_path: data/processed/test_creditcard.csv
+  test_size: 0.2
+
+estimators:
+  SGDClassifier:
+    params: 
+      # alpha: 0.0001
+      # l1_ratio: 0.15
+      alpha: 0.0003
+      l1_ratio: 0.9
+      # alpha: 0.0005
+      # l1_ratio: 0.6
+model_dir: saved_models
+
+# reports:
+#   params: report/params.json
+#   scores: report/scores.json
+
+webapp_model_dir: prediction_service/model/model.joblib
+
+mlflow_config:
+  artifacts_dir: artifacts
+  experiment_name: SGDClassifier
+  run_name: mlops
+  registered_model_name: CreditSGDClassifierModel
+  remote_server_uri: http://0.0.0.0:1234
